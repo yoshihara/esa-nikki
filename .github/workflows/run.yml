@@ -13,7 +13,7 @@ jobs:
       run: cargo build --verbose --release
     - name: run
       env:
-        SLACK_TOKEN: ${{ secret.SLACK_TOKEN }}
-        ESA_TOKEN: ${{ secret.ESA_TOKEN }}
-        ESA_TEAMNAME: ${{ secret.ESA_TEAMNAME }}
+        SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
+        ESA_TOKEN: ${{ secrets.ESA_TOKEN }}
+        ESA_TEAMNAME: ${{ secrets.ESA_TEAMNAME }}
       run: ./target/release/esa-nikki
