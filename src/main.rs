@@ -1,7 +1,7 @@
 extern crate chrono;
 extern crate reqwest;
 
-use chrono::{DateTime, Duration, Local, TimeZone};
+use chrono::{DateTime, Duration, FixedOffset, Utc, TimeZone};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::env;
@@ -66,13 +66,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     match slack_response {
         Ok(res) => {
-            let target_date = Local::today() - Duration::days(1);
+            let target_date = (Utc::now().with_timezone(&FixedOffset::east(9 * 3600)) - Duration::days(1)).date();
             post_name = format!("nikki/{}", target_date.format("%Y/%m/%d"));
-            let mut logs = HashMap::new();
 
+            let mut logs = HashMap::new();
             for message in res.messages {
                 let time = message.ts.parse::<f64>()? as i64;
-                let dt: DateTime<Local> = Local.timestamp(time, 0);
+                let dt: DateTime<FixedOffset> = FixedOffset::east(9 * 3600).timestamp(time, 0);
+
                 if dt.date() == target_date {
                     let hour = dt.format("%H");
                     let hour_logs = logs.entry(format!("{}", hour)).or_insert(vec![]);
