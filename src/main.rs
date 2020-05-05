@@ -30,6 +30,7 @@ const ESA_TOKEN_ENV_NAME: &'static str = "ESA_TOKEN";
 const ESA_TEAMNAME_ENV_NAME: &'static str = "ESA_TEAMNAME";
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
+    print!("test");
     let slack_token = match env::var(SLACK_TOKEN_ENV_NAME) {
         Ok(val) => val,
         Err(err) => {

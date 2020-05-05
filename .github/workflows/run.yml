@@ -14,4 +14,4 @@ jobs:
         SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
         ESA_TOKEN: ${{ secrets.ESA_TOKEN }}
         ESA_TEAMNAME: ${{ secrets.ESA_TEAMNAME }}
-      run: cargo run
+      run: cargo run --verbose
