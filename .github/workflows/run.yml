@@ -1,4 +1,4 @@
-name: Rust
+name: run release package
 
 on:
   push:
@@ -12,4 +12,8 @@ jobs:
     - name: Build release
       run: cargo build --verbose --release
     - name: run
+      env:
+        SLACK_TOKEN: ${{ secret.SLACK_TOKEN }}
+        ESA_TOKEN: ${{ secret.ESA_TOKEN }}
+        ESA_TEAMNAME: ${{ secret.ESA_TEAMNAME }}
       run: ./target/release/esa-nikki
