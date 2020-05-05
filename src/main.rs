@@ -78,7 +78,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 if dt.date() == target_date {
                     let hour = dt.format("%H");
                     let hour_logs = logs.entry(format!("{}", hour)).or_insert(vec![]);
-                    println!("{:?}", message.text);
                     hour_logs.push(message.text);
                 }
             }
