@@ -30,7 +30,6 @@ const ESA_TOKEN_ENV_NAME: &'static str = "ESA_TOKEN";
 const ESA_TEAMNAME_ENV_NAME: &'static str = "ESA_TEAMNAME";
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    print!("test");
     let slack_token = match env::var(SLACK_TOKEN_ENV_NAME) {
         Ok(val) => val,
         Err(err) => {
@@ -51,7 +50,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             panic!("{}: {}", err, ESA_TEAMNAME_ENV_NAME);
         }
     };
-    print!("slack get");
+
     let slack_history_url = format!(
         "https://slack.com/api/conversations.history?token={}",
         slack_token
@@ -61,17 +60,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     if res.status() != 200 {
         panic!("Get slack history is failed");
     }
-    print!("parse slack response");
+
     let slack_response = res.json::<SlackResponse>();
     let post_name: String;
 
     match slack_response {
         Ok(res) => {
-            print!("slack response ok");
             let target_date = Local::today() - Duration::days(1);
             post_name = format!("nikki/{}", target_date.format("%Y/%m/%d"));
             let mut logs = HashMap::new();
-            print!("format slack response");
+
             for message in res.messages {
                 let time = message.ts.parse::<f64>()? as i64;
                 let dt: DateTime<Local> = Local.timestamp(time, 0);
@@ -82,8 +80,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     hour_logs.push(message.text);
                 }
             }
-            print!("create esa body");
-            if logs.len() > 0 {
+
+            if logs.len() == 0 {
+                print!("No logs are detected. exit");
+            } else {
                 let mut post_body: String = String::from("");
 
                 for (hour, hour_logs) in &logs {
@@ -94,7 +94,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         hour_logs.join("\n - ")
                     );
                 }
-                print!("post esa");
+
                 let mut post_json = HashMap::new();
                 post_json.insert("name", &post_name);
                 post_json.insert("body_md", &post_body);
@@ -106,7 +106,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     .send();
                 match esa_response {
                     Ok(res) => {
-                        print!("ok esa");
                         if res.status() == 201 {
                             println!("OK");
                         } else {
