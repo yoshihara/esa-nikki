@@ -18,7 +18,7 @@ jobs:
         tar czf esa-nikki.tar.gz ./target/release/esa-nikki
 
     - name: Create Release
-      id: create_release
+      id: create-release
       uses: actions/create-release@latest
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
