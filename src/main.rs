@@ -1,7 +1,7 @@
 extern crate chrono;
 extern crate reqwest;
 
-use chrono::{DateTime, Duration, FixedOffset, Utc, TimeZone};
+use chrono::{DateTime, Duration, FixedOffset, TimeZone, Utc};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::env;
@@ -66,7 +66,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     match slack_response {
         Ok(res) => {
-            let target_date = (Utc::now().with_timezone(&FixedOffset::east(9 * 3600)) - Duration::days(1)).date();
+            let target_date =
+                (Utc::now().with_timezone(&FixedOffset::east(9 * 3600)) - Duration::days(1)).date();
             post_name = format!("nikki/{}", target_date.format("%Y/%m/%d"));
 
             let mut logs = HashMap::new();
@@ -100,7 +101,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 post_json.insert("name", &post_name);
                 post_json.insert("body_md", &post_body);
                 let esa_response = reqwest::blocking::Client::new()
-                    .post(&format!("https://api.esa.io/v1/teams/{}/posts", esa_teamname))
+                    .post(&format!(
+                        "https://api.esa.io/v1/teams/{}/posts",
+                        esa_teamname
+                    ))
                     .header("Content-Type", "application/json")
                     .header("Authorization", format!("Bearer {}", esa_token))
                     .json(&post_json)
