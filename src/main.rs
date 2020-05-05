@@ -20,11 +20,6 @@ struct SlackResponse {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-struct EsaResponse {
-    url: String,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
 struct EsaErrorResponse {
     error: String,
     message: String,
@@ -109,8 +104,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 match esa_response {
                     Ok(res) => {
                         if res.status() == 201 {
-                            let ok_response = res.json::<EsaResponse>().unwrap();
-                            println!("OK: {}", ok_response.url);
+                            println!("OK");
                         } else {
                             let error_response = res.json::<EsaErrorResponse>().unwrap();
                             println!("{}: {}", error_response.error, error_response.message);
