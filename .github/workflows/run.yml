@@ -9,11 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Build release
-      run: cargo build --verbose --release
     - name: run
       env:
         SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
         ESA_TOKEN: ${{ secrets.ESA_TOKEN }}
         ESA_TEAMNAME: ${{ secrets.ESA_TEAMNAME }}
-      run: ./target/release/esa-nikki
+      run: cargo run
