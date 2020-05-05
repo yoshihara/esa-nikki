@@ -15,7 +15,7 @@ jobs:
 
     - name: Create assets
       run: |
-        tar czf ${{ github.ref }}.tar.gz ./target/release/esa-nikki
+        tar czf esa-nikki.tar.gz ./target/release/esa-nikki
 
     - name: Create Release
       id: create_release
@@ -34,6 +34,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create-release.outputs.result }}
-        asset_path: ${{ github.ref }}.tar.gz
-        asset_name: ${{ github.ref }}.tar.gz
+        asset_path: esa-nikki.tar.gz
+        asset_name: esa-nikki.tar.gz
         asset_content_type: application/gzip
