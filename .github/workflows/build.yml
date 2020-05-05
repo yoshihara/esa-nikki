@@ -1,0 +1,39 @@
+name: build and upload release package
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build_and_upload:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build release
+      run: cargo build --verbose --release
+
+    - name: Create assets
+      run: |
+        tar czf ${{ github.ref }}.tar.gz ./target/release/esa-nikki
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@latest
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: ${{ github.ref }}
+        draft: false
+        prerelease: false
+    - name: Upload assets to Release
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create-release.outputs.result }}
+        asset_path: ${{ github.ref }}.tar.gz
+        asset_name: ${{ github.ref }}.tar.gz
+        asset_content_type: application/gzip
