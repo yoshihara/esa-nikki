@@ -14,9 +14,9 @@ jobs:
       run: |
         git pull --tags
         tag=`git tag --list 'v*' | head -1`
-        wget https://github.com/yoshihara/esa-nikki/releases/download/${tag}/esa-nikki.tar.gz
+        wget https://github.com/yoshihara/esa-nikki/releases/download/${tag}/esa-nikki-ubuntu.tar.gz
     - name: unzip package
-      run: tar -zxvf esa-nikki.tar.gz
+      run: tar -zxvf esa-nikki-ubuntu.tar.gz
     - name: run
       env:
         SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
