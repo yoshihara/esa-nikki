@@ -5,13 +5,21 @@ on:
     - cron:  '1 19 * * *'
 
 jobs:
-  build:
+  run:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: download latest package
+      shell: bash
+      run: |
+        git pull --tags
+        tag=`git tag --list 'v*' | head -1`
+        wget https://github.com/yoshihara/esa-nikki/releases/download/${tag}/esa-nikki.tar.gz
+    - name: unzip package
+      run: tar -zxvf esa-nikki.tar.gz
     - name: run
       env:
         SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
         ESA_TOKEN: ${{ secrets.ESA_TOKEN }}
         ESA_TEAMNAME: ${{ secrets.ESA_TEAMNAME }}
-      run: cargo run
+      run: ./target/release/esa-nikki'
