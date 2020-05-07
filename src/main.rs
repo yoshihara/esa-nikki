@@ -63,7 +63,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let slack_response = res.json::<SlackResponse>();
 
     let target_date =
-    (Utc::now().with_timezone(&FixedOffset::east(9 * 3600)) - Duration::days(1)).date();
+        (Utc::now().with_timezone(&FixedOffset::east(9 * 3600)) - Duration::days(1)).date();
     let post_name = format!("nikki/{}", target_date.format("%Y/%m/%d"));
 
     match slack_response {
