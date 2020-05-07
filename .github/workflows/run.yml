@@ -13,7 +13,7 @@ jobs:
       shell: bash
       run: |
         git pull --tags
-        tag=`git tag --list 'v*' | head -1`
+        tag=`git tag --list 'v*' | tail -1`
         wget https://github.com/yoshihara/esa-nikki/releases/download/${tag}/esa-nikki-ubuntu.tar.gz
     - name: unzip package
       run: tar -zxvf esa-nikki-ubuntu.tar.gz
