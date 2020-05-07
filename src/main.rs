@@ -16,7 +16,6 @@ struct SlackMessage {
 struct SlackResponse {
     ok: bool,
     messages: Vec<SlackMessage>,
-    has_more: bool,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
