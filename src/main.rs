@@ -5,6 +5,7 @@ use chrono::{DateTime, Duration, FixedOffset, TimeZone, Utc};
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, HashMap};
 use std::env;
+use std::process;
 
 #[derive(Debug, Serialize, Deserialize)]
 struct SlackMessage {
@@ -68,6 +69,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     match slack_response {
         Ok(res) => {
+            if !res.ok {
+                println!("Slack response is not ok: {:?}", res.messages);
+                process::exit(-1);
+            }
+
             let mut logs = BTreeMap::new();
             for message in res.messages {
                 let time = message.ts.parse::<f64>()? as i64;
