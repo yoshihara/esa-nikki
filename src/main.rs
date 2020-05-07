@@ -62,15 +62,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     let slack_response = res.json::<SlackResponse>().unwrap();
-
-    let target_date =
-        (Utc::now().with_timezone(&FixedOffset::east(9 * 3600)) - Duration::days(1)).date();
-    let post_name = format!("nikki/{}", target_date.format("%Y/%m/%d"));
-
     if !slack_response.ok {
         println!("Slack response is not ok: {:?}", slack_response.messages);
         process::exit(-1);
     }
+
+    let target_date =
+        (Utc::now().with_timezone(&FixedOffset::east(9 * 3600)) - Duration::days(1)).date();
+    let post_name = format!("nikki/{}", target_date.format("%Y/%m/%d"));
 
     let mut logs = BTreeMap::new();
     for message in slack_response.messages {
