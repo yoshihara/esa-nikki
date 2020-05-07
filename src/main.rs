@@ -3,7 +3,7 @@ extern crate reqwest;
 
 use chrono::{DateTime, Duration, FixedOffset, TimeZone, Utc};
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
+use std::collections::{BTreeMap, HashMap};
 use std::env;
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -70,7 +70,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 (Utc::now().with_timezone(&FixedOffset::east(9 * 3600)) - Duration::days(1)).date();
             post_name = format!("nikki/{}", target_date.format("%Y/%m/%d"));
 
-            let mut logs = HashMap::new();
+            let mut logs = BTreeMap::new();
             for message in res.messages {
                 let time = message.ts.parse::<f64>()? as i64;
                 let dt: DateTime<FixedOffset> = FixedOffset::east(9 * 3600).timestamp(time, 0);
