@@ -96,11 +96,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 hour_logs.join("\n - ")
             );
         }
-        let wip = String::from("false");
 
         let mut post_json = HashMap::new();
         post_json.insert("name", &post_name);
         post_json.insert("body_md", &post_body);
+        let wip = String::from("false");
         post_json.insert("wip", &wip);
 
         let esa_response = reqwest::blocking::Client::new()
