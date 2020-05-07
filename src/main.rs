@@ -112,17 +112,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .header("Content-Type", "application/json")
             .header("Authorization", format!("Bearer {}", esa_token))
             .json(&post_json)
-            .send();
-        match esa_response {
-            Ok(res) => {
-                if res.status() == 201 {
-                    println!("OK");
-                } else {
-                    let error_response = res.json::<EsaErrorResponse>().unwrap();
-                    println!("{}: {}", error_response.error, error_response.message);
-                }
-            }
-            Err(message) => panic!(message),
+            .send()
+            .unwrap();
+
+        if esa_response.status() == 201 {
+            println!("OK");
+        } else {
+            let error_response = esa_response.json::<EsaErrorResponse>().unwrap();
+            println!("{}: {}", error_response.error, error_response.message);
         }
     }
 
