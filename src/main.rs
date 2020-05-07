@@ -89,7 +89,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
                 for (hour, hour_logs) in &logs {
                     post_body = format!(
-                        "{} ## {}時\n\n - {}",
+                        "{}\n\n ## {}時\n\n - {}",
                         post_body,
                         hour,
                         hour_logs.join("\n - ")
