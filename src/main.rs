@@ -78,7 +78,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         if dt.date() == target_date {
             let hour = dt.format("%H");
-            let hour_logs = logs.entry(format!("{}", hour)).or_insert(String::from(""));
+            let hour_logs = logs.entry(format!("## {}時", hour)).or_insert(String::from(""));
             *hour_logs = format!("\n- {}", message.text) + hour_logs;
         }
     }
@@ -90,7 +90,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         for (hour, hour_logs) in &logs {
             post_body = format!(
-                "{}\n\n ## {}時\n\n{}",
+                "{}\n\n{}\n{}",
                 post_body,
                 hour,
                 hour_logs
